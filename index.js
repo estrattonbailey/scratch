@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 'use strict'
 
-const vm = require('vm')
 const fs = require('fs')
 const path = require('path')
 const mri = require('mri')
@@ -12,11 +11,17 @@ const generate = require('@babel/generator').default
 const pkg = require('./package.json')
 
 const { _ } = mri(process.argv.slice(2))
-const file = path.resolve(_[0])
+const file = _[0] ? path.resolve(__dirname, _[0]) : `./scratch_${Date.now()}.js`
 const banner = `scratch v${pkg.version}`
 
 console.clear()
 console.log(c.green(banner))
+
+try {
+  require.resolve(file)
+} catch (e) {
+  fs.closeSync(fs.openSync(file, 'w'))
+}
 
 function run () {
   try {
