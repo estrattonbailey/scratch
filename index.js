@@ -10,8 +10,9 @@ const generate = require('@babel/generator').default
 
 const pkg = require('./package.json')
 
+const cwd = process.cwd()
 const { _ } = mri(process.argv.slice(2))
-const file = _[0] ? path.resolve(__dirname, _[0]) : `./scratch_${Date.now()}.js`
+const file = _[0] ? path.resolve(cwd, _[0]) : path.resolve(cwd, `./scratch_${Date.now()}.js`)
 const banner = `scratch v${pkg.version}`
 
 console.clear()
