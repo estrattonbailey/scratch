@@ -1,8 +1,9 @@
 # scratch
-A little REPL CLI for fast local prototyping.
+
+A little REPL, powered by [esbuild](https://esbuild.github.io/).
 
 ## Usage
-Start a new scratch REPL in your terminal:
+
 ```bash
 npx @estrattonbailey/scratch index.js
 ```
@@ -12,7 +13,6 @@ Then open your favorite editor:
 vim index.js
 ```
 
-Updates are transpiled and logged immediately.
-
 ## License
-MIT License © [Eric Bailey](https://estrattonbailey.com)
+
+MIT License © [Sure Thing](https://github.com/sure-thing)

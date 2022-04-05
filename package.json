@@ -15,10 +15,9 @@
   "author": "estrattonbailey",
   "license": "MIT",
   "dependencies": {
-    "@babel/generator": "^7.1.6",
-    "@babel/parser": "^7.1.6",
-    "ansi-colors": "^3.2.1",
-    "chokidar": "^2.0.4",
-    "mri": "^1.1.4"
+    "esbuild": "^0.14.31",
+    "esbuild-register": "^3.3.2",
+    "kleur": "^4.1.4",
+    "watch-dependency-graph": "^3.0.1"
   }
 }

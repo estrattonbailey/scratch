@@ -1,24 +1,27 @@
 #! /usr/bin/env node
 "use strict";
 
+require('esbuild-register/dist/node').register()
+
 const fs = require("fs");
 const path = require("path");
-const mri = require("mri");
-const c = require("ansi-colors");
-const { parse } = require("@babel/parser");
-const generate = require("@babel/generator").default;
+const c = require("kleur");
 
 const pkg = require("./package.json");
 
-const cwd = process.cwd();
-const { _ } = mri(process.argv.slice(2));
-const file = _[0]
-  ? path.resolve(cwd, _[0])
-  : path.resolve(cwd, `./scratch_${Date.now()}.js`);
 const banner = `scratch v${pkg.version}`;
+const cwd = process.cwd();
+const [entry] = process.argv.slice(2)
 
 console.clear();
-console.log(c.green(banner));
+console.log(c.green(banner) + "\n");
+
+if (!entry) {
+  console.error(`\n${c.yellow(banner)}\n\nUsage: npx ${pkg.name} ${c.green('<file>')}\n`)
+  process.exit(1)
+}
+
+const file = path.resolve(cwd, entry)
 
 try {
   require.resolve(file);
@@ -26,38 +29,16 @@ try {
   fs.closeSync(fs.openSync(file, "w"));
 }
 
-const reqRegEx = /require\('(.+)'\)/;
-
 function run() {
   try {
-    const code = fs.readFileSync(file, "utf8");
-
-    const files = code
-      .match(new RegExp(reqRegEx, 'gm'))
-      .map(c => c.match(reqRegEx)[1])
-      .filter(p => Boolean(p));
-
-    files.forEach(file => {
-      delete require.cache[require.resolve(cwd, file)]
-    });
-
-    const ast = parse(code.replace(/\.\//g, cwd + "/"));
-
-    const transpiled = generate(ast, {}, code).code;
-
-    console.clear();
-    console.log(c.green(banner) + "\n");
-    const res = eval(transpiled);
-    if (res) console.log("\n> " + res);
+    require(file)
   } catch (e) {
-    console.clear();
-    console.log(c.red(banner) + "\n");
-    console.log(e);
+    console.error(e);
   }
 }
 
-run();
+const watcher = require('watch-dependency-graph').create()
+watcher.on('change', run)
+watcher.add(file)
 
-require("chokidar")
-  .watch(file)
-  .on("change", run);
+run();
