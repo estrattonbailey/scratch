@@ -15,8 +15,9 @@
   "author": "estrattonbailey",
   "license": "MIT",
   "dependencies": {
-    "esbuild": "^0.14.31",
-    "esbuild-register": "^3.3.2",
+    "consola": "^2.15.3",
+    "esbuild": "^0.17.11",
+    "esbuild-register": "^3.4.2",
     "kleur": "^4.1.4",
     "watch-dependency-graph": "^3.0.1"
   }
