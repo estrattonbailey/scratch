@@ -36,13 +36,13 @@ function run() {
   console.log(c.green(banner) + "\n");
 
   try {
-    const outfile = path.join(cwd, ".scratch", path.basename(file).split(".").reverse().slice(1).reverse() + ".js");
+    const outfile = path.join(cwd, ".scratch", path.basename(file).split(".").reverse().slice(1).reverse().join('.') + ".js");
     try {
       delete require.cache[require.resolve(outfile)]
     } catch (e) {}
     require('esbuild').buildSync({
       entryPoints: [file],
-      bundle: false,
+      bundle: true,
       outfile,
       sourcemap: true,
       format: "esm",
